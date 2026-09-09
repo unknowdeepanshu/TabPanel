@@ -10,8 +10,8 @@ chrome.runtime.onMessage.addListener((message) => {
 
     if (message.command === "toggle-tabplan") {
       openTabPlan();
-      window.addEventListener("keyup", (event) => {
-        if (event.key === "AltLeft" || event.code === "KeyL") {
+      window.addEventListener("click", (event) => {
+        if ((event.target as HTMLElement | null)?.id === "tabplan-root") {
           closeTabPlan();
         }
       });
@@ -61,7 +61,7 @@ function openTabPlan() {
     </StrictMode>,
   );
 }
-function closeTabPlan() {
+export function closeTabPlan() {
   if (!tabplanRoot) return;
 
   // Properly unmount React first
