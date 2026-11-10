@@ -30,7 +30,7 @@ export default function TabPlanIframe() {
       const systemTheme =
         window.matchMedia("(prefers-color-scheme: dark)").matches ?
           "dark"
-        : "light";
+          : "light";
 
       documentElement.classList.remove("light", "dark");
       documentElement.classList.add(systemTheme);

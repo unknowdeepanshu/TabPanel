@@ -1,44 +1,53 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { Field } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import Project from "../project/project";
 import { Card } from "@/components/ui/card";
-import { IconFolderCode } from "@tabler/icons-react";
+import { AppSidebar } from "@/components/app-sidebar"
+
 import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import { IframeMode } from "../Iframe/iframeToggelMode";
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 
 export function CardDemo() {
   return (
     <>
       <Card className="w-full h-full">
-        <EmptyDemo />
-        <IframeMode />
+        {/* <IframeMode /> */}
+        <Page />
       </Card>
     </>
   );
 }
 
-function EmptyDemo() {
+
+export default function Page() {
   return (
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia variant="icon">
-          <IconFolderCode />
-        </EmptyMedia>
-        <EmptyTitle>No Projects Yet</EmptyTitle>
-        <EmptyDescription>
-          You haven&apos;t created any projects yet. Get started by creating
-          your first project.
-        </EmptyDescription>
-      </EmptyHeader>
-      <EmptyContent className="flex-row justify-center gap-2">
-        <Button>Create Project</Button>
-        <Button variant="outline">Import Project</Button>
-      </EmptyContent>
-    </Empty>
-  );
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset  >
+        <div className="flex bg-white-400 flex-1 text-black flex-col gap-4 p-4">
+          <div className="h-full w-full flex flex-col">
+            <div className="flex flex-col gap-3">
+              <h1 className="text-3xl flex">Workspace</h1 >
+              <InputInline />
+            </div>
+            <Project />
+          </div>
+
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
+
+export function InputInline() {
+  return (
+    <Field orientation="horizontal">
+      <Input type="search" placeholder="Search..." />
+      <Button variant="orange" className="">Search</Button>
+    </Field>
+  )
 }
