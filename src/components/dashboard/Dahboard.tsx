@@ -8,7 +8,6 @@ import { AppSidebar } from "@/components/app-sidebar"
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 export function CardDemo() {
@@ -30,7 +29,7 @@ export default function Page() {
       <SidebarInset  >
         <div className="flex bg-white-400 flex-1 text-black flex-col gap-4 p-4">
           <div className="h-full w-full flex flex-col">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mb-4">
               <h1 className="text-3xl flex">Workspace</h1 >
               <InputInline />
             </div>
