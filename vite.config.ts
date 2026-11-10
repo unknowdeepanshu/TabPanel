@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
-import manifest from "./manifest.json";
+import manifest from "./manifest.json" with { type: "json" };
 import { crx } from "@crxjs/vite-plugin";
 
 export default defineConfig({
@@ -11,7 +11,7 @@ export default defineConfig({
   base: "./",
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
 });

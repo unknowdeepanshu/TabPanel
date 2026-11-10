@@ -9,26 +9,14 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import { useEffect, useState } from "react";
 import { IframeMode } from "../Iframe/iframeToggelMode";
 
 export function CardDemo() {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    console.log(count);
-  }, [count]);
   return (
     <>
       <Card className="w-full h-full">
         <EmptyDemo />
         <IframeMode />
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
       </Card>
     </>
   );
