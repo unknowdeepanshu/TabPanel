@@ -9,6 +9,7 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import Tabs from "../tab/tab";
 
 export function CardDemo() {
   return (
@@ -34,6 +35,7 @@ export default function Page() {
               <InputInline />
             </div>
             <Project />
+            <Tabs />
           </div>
 
         </div>

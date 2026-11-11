@@ -10,8 +10,7 @@ function Project() {
                 <Button variant="ghost" >Add projects</Button>
             </div>
             <Separator className="bg-black-200/35" />
-            <div className='flex mt-3'>
-                <ProjectCard />
+            <div className='flex mt-3 gap-4 shrink-0 overflow-auto '>
                 <ProjectCard />
                 <ProjectCard />
                 <ProjectCard />
