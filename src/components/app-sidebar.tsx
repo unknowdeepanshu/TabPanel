@@ -1,68 +1,58 @@
-"use client"
-
 import * as React from "react"
 import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { LayoutBottomIcon } from "@hugeicons/core-free-icons"
-import {
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { useAppSelector } from "@/store/hook"
+import type { Dispatch, SetStateAction } from "react"
+
+
 // This is sample data.
 
-const data = {
-  user: {
-    name: "Dipanshu",
-    email: "Dipanshu@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: (
-        <HugeiconsIcon icon={LayoutBottomIcon} strokeWidth={2} />
-      ),
-      plan: "Enterprise",
-    }
-  ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      isActive: true,
 
-    }
-  ],
-
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  workspaceId?: number
+  setWorkspaceId: Dispatch<SetStateAction<number | undefined>>
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  workspaceId,
+  setWorkspaceId,
+  ...props
+}: AppSidebarProps) {
+
+  const datas = useAppSelector((state) => state.workspace)
+  const workspacesName = datas?.workspaces.map((workspaceState) => {
+    return {
+      id: workspaceState?.id,
+      title: workspaceState?.workspaceName
+    }
+  })
   return (
     <>
       <Sidebar className=" text-white-400" collapsible="icon" {...props}>
         <SidebarHeader className="bg-black-100">
-          <TeamSwitcher teams={data.teams} />
         </SidebarHeader>
         <SidebarContent className="bg-black-100">
-          <NavMain items={data.navMain} />
-
+          <NavMain
+            items={workspacesName}
+            activeWorkspaceId={workspaceId}
+            onWorkspaceSelect={setWorkspaceId}
+          />
         </SidebarContent>
-        <SidebarFooter className="bg-black-100">
-          <NavUser user={data.user} />
-        </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-      <div className="h-auto bg-white-400 ml-1 w-3 flex justify-center flex-col items-center">
-        <SidebarTrigger />
-      </div>
     </>
   )
 }
+
+function VerticalLinesvg() {
+  return (<>
+    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: "3rem", width: "3rem" }} width="4rem" height="10rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" widths="3rem"><path d="M12 5v14"></path></svg>
+  </>);
+}
+
+export default VerticalLinesvg;

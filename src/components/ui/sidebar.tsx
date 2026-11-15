@@ -21,7 +21,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { IconMinusVertical } from '@tabler/icons-react';
+import VerticalLinesvg from "../app-sidebar"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -173,6 +173,7 @@ function Sidebar({
         {...props}
       >
         {children}
+
       </div>
     )
   }
@@ -244,6 +245,9 @@ function Sidebar({
         >
           {children}
         </div>
+        <div className="h-auto w-4 flex justify-center flex-col items-center">
+          <SidebarTrigger />
+        </div>
       </div>
     </div>
   )
@@ -269,7 +273,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <IconMinusVertical stroke={2} color="#000000" />
+      <VerticalLinesvg />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

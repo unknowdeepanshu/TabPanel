@@ -12,6 +12,90 @@
 //   });
 // });
 
+async function getAllWindowGroups() {
+  const result = windows;
+  // await Promise.all(
+  //   windows.map(async (window) => {
+  //     if (window.id === undefined) {
+  //       throw new Error("Chrome returned a window without an id.");
+  //     }
+
+  //     const tabs = await browser.tabs.query({
+  //       windowId: window.id,
+  //     });
+
+  //     const groups = await browser.tabGroups.query({
+  //       windowId: window.id,
+  //     });
+
+  //     const groupsWithTabs = await Promise.all(
+  //       groups.map(async (group) => {
+  //         const tabs = await browser.tabs.query({
+  //           groupId: group.id,
+  //         });
+
+  //         return {
+  //           ...group,
+  //           tabs,
+  //         };
+  //       }),
+  //     );
+
+  //     return {
+  //       windowId: window.id,
+  //       tabs,
+  //       groups: groupsWithTabs,
+  //     };
+  //   }),
+  // );
+
+  return result;
+}
+
+// Usage
+browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  if (message.type !== "GET_TAB_DATA") {
+    return false;
+  }
+  const windows = await browser.windows.getAll();
+  const result = await Promise.all(
+    windows.map(async (window) => {
+      if (window.id === undefined) {
+        throw new Error("Chrome returned a window without an id.");
+      }
+
+      const tabs = await browser.tabs.query({
+        windowId: window.id,
+      });
+
+      const groups = await browser.tabGroups.query({
+        windowId: window.id,
+      });
+
+      const groupsWithTabs = await Promise.all(
+        groups.map(async (group) => {
+          const tabs = await browser.tabs.query({
+            groupId: group.id,
+          });
+
+          return {
+            ...group,
+            tabs,
+          };
+        }),
+      );
+      return {
+        windowId: window.id,
+        tabs,
+        groups: groupsWithTabs,
+      };
+    }),
+  );
+  sendResponse({
+    success: true,
+    data: result,
+  });
+});
 let tabPlanWindowId = null;
 
 async function openTabPlan() {

@@ -33,5 +33,12 @@
     "type": "module"
   },
 
-  "permissions": ["activeTab", "scripting"]
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs",
+    "tabGroups",
+    "windows",
+    "nativeMessaging"
+  ]
 }

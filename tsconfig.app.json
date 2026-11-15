@@ -26,5 +26,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "background.js"]
+  "include": ["src", "background.js", "dist/src/background copy.js"]
 }

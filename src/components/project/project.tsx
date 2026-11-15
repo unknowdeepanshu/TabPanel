@@ -1,36 +1,61 @@
-import { IconFolderFilled } from '@tabler/icons-react';
-import { Button } from '../ui/button';
-import { Separator } from '../ui/separator';
+import type { Project as WorkspaceProject } from "@/type/workspace";
+import { IconFolderFilled } from "@tabler/icons-react";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
-function Project() {
-    return (<>
-        <div className='flex w-auto flex-col mt-3'>
-            <div className='w-auto flex items-center justify-between'>
-                <IconFolderFilled color="#f97316" width="5rem" height="5rem" />
-                <Button variant="ghost" >Add projects</Button>
+interface ProjectProps {
+    projects: WorkspaceProject[];
+    selectedProjectId?: number;
+    onProjectSelect: (projectId: number) => void;
+}
+
+function Project({
+    projects,
+    selectedProjectId,
+    onProjectSelect,
+}: ProjectProps) {
+    return (
+        <div className="mt-3 flex w-auto flex-col">
+            <div className="flex w-auto items-center justify-between">
+                <IconFolderFilled color="#f97316" width="2rem" height="2rem" />
+                <Button variant="ghost">Add projects</Button>
             </div>
             <Separator className="bg-black-200/35" />
-            <div className='flex mt-3 gap-4 shrink-0 overflow-auto '>
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
+            <div className="mt-3 flex shrink-0 gap-4 overflow-auto">
+                {projects.map((project) => (
+                    <ProjectCard
+                        key={project.id}
+                        project={project}
+                        isSelected={project.id === selectedProjectId}
+                        onSelect={onProjectSelect}
+                    />
+                ))}
             </div>
         </div>
-
-    </>);
+    );
 }
 
-function ProjectCard() {
+interface ProjectCardProps {
+    project: WorkspaceProject;
+    isSelected: boolean;
+    onSelect: (projectId: number) => void;
+}
+
+function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
     return (
-        <>
-            <div className=' border-2 w-fit rounded-2xl  hover:bg-black-200/10  flex'>
-                <IconFolderFilled color="#f97316" width="5rem" height="5rem" />
-                <div className='flex p-3 flex-col justify-center'>
-                    <h1 >Tab managemts</h1>
-                    <h1>12 tabs</h1>
-                </div>
+        <button
+            type="button"
+            className={`flex w-fit rounded-2xl border-2 border-black-200/10 hover:bg-black-200/10 ${isSelected ? "bg-black-200/10" : ""
+                }`}
+            onClick={() => onSelect(project.id)}
+        >
+            <IconFolderFilled color="#f97316" width="5rem" height="5rem" />
+            <div className="flex flex-col justify-center p-3 text-left">
+                <h1>{project.name}</h1>
+                <h1>{project.tabNumber}</h1>
             </div>
-        </>
-    )
+        </button>
+    );
 }
+
 export default Project;

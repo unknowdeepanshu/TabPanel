@@ -17,7 +17,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { MoreHorizontalCircle01Icon, FolderIcon, ArrowRightIcon, Delete02Icon } from "@hugeicons/core-free-icons"
+import { MoreHorizontalCircle01Icon, FolderIcon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { IconFolderPlus } from '@tabler/icons-react';
 export function NavProjects({
   projects,
@@ -25,7 +25,7 @@ export function NavProjects({
   projects: {
     name: string
     url: string
-    icon: React.ReactNode
+    icon?: React.ReactNode
   }[]
 }) {
   const { isMobile } = useSidebar()
@@ -58,12 +58,9 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <HugeiconsIcon icon={FolderIcon} strokeWidth={2} />
-                  <span>View Project</span>
+                  <span>Change name</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <HugeiconsIcon icon={ArrowRightIcon} strokeWidth={2} />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive">
                   <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
@@ -73,12 +70,6 @@ export function NavProjects({
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} className="text-sidebar-foreground/70" />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   )

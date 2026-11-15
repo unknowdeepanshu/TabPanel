@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import iframDarkModeReducer from "./iframeDarkmode/darkmodeSlice";
+import workspaceReducer from "./workspace/workspaceSlice";
 
 export const store = configureStore({
-  reducer: { mode: iframDarkModeReducer },
+  reducer: { mode: iframDarkModeReducer, workspace: workspaceReducer },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

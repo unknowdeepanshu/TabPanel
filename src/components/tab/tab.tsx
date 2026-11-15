@@ -1,65 +1,71 @@
-import { IconFolderFilled, IconExternalLinkFilled } from '@tabler/icons-react';
+import { IconExternalLinkFilled, IconDotsVerticalFilled } from '@tabler/icons-react';
+import { IconWorld } from '@tabler/icons-react';
+import type { Tab as WorkspaceTab } from "@/type/workspace";
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
+import { useState } from "react";
 
-function Tabs() {
+interface TabsProps {
+    tabs: WorkspaceTab[];
+    selectedTabId?: number;
+    onTabSelect: (tabId: number) => void;
+}
+
+function Tabs({ tabs, selectedTabId, onTabSelect }: TabsProps) {
     return (<>
-        <div className='flex w-auto flex-col mt-3 bg-black-100/5 p-2 rounded-2xl'>
-            <Separator className="bg-black-200/35 mt-3" />
+        <div className='flex w-auto flex-col p-2 rounded-2xl'>
             <div className='w-auto flex items-center justify-between'>
-                <Chrome /> <Button variant="ghost" >Add Tabs</Button>
+                <Chrome /> <Button variant="ghost" ><IconDotsVerticalFilled /></Button>
             </div>
             <Separator className="bg-black-200/35" />
-            <div className='flex mt-3 gap-2 flex-wrap justify-around'>
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
-                <TabsCard />
+            <div className="mt-3 grid w-full grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-3">
+                {tabs.map((tab) => (
+                    <TabsCard
+                        key={tab.id}
+                        tab={tab}
+                        isSelected={tab.id === selectedTabId}
+                        onSelect={onTabSelect}
+                    />
+                ))}
             </div>
         </div>
 
     </>);
 }
 
-function TabsCard() {
+interface TabsCardProps {
+    tab: WorkspaceTab;
+    isSelected: boolean;
+    onSelect: (tabId: number) => void;
+}
+function TabsCard({ tab, isSelected, onSelect }: TabsCardProps) {
+    const [faviconFailed, setFaviconFailed] = useState(!tab.favIconUrl)
+
     return (
         <>
-            <div className=' border-2 w-fit rounded-2xl bg-white p-2  hover:bg-black-200/10  flex'>
-                <div className='w-auto h-auto flex  justify-center items-center'>
-                    <IconFolderFilled color="#f97316" width="2rem" height="2rem" />
+            <button
+                type="button"
+                className={`flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-2xl border-2 border-gray-700/30 bg-white p-3 text-left hover:bg-black-200/10 ${isSelected ? "ring-2 ring-orange-400" : ""
+                    }`}
+                onClick={() => onSelect(tab.id)}
+            >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center">
+                    {faviconFailed ? (
+                        <IconWorld size={24} className="text-gray-500" />
+                    ) : (
+                        <img
+                            src={tab.favIconUrl}
+                            alt=""
+                            className="h-8 w-8 object-contain"
+                            onError={() => setFaviconFailed(true)}
+                        />
+                    )}
                 </div>
-                <div className='flex flex-col m-2'>
-                    <div className='flex justify-center gap-2 items-center'>
-                        <h1 >Tab managemts</h1>
-                        <IconExternalLinkFilled height={15} />
-                    </div>
-                    <h1 className='w-auto flex'>12 tabs</h1>
-                </div>
-            </div>
+                <span className="min-w-0 flex-1 truncate" title={tab.title}>
+                    {tab.title || "Unknown"}
+                </span>
+                <IconExternalLinkFilled className="shrink-0" height={15} />
+            </button>
         </>
     )
 }
