@@ -1,8 +1,7 @@
-
 import {
   Collapsible,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@src/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -11,19 +10,21 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@src/components/ui/sidebar"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@src/components/ui/dropdown-menu"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { MoreHorizontalCircle01Icon, FolderIcon, Delete02Icon } from "@hugeicons/core-free-icons"
+import { MoreHorizontalCircle01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { IconFolderPlus, IconFolderFilled } from '@tabler/icons-react';
 import { cn } from "cn"
-import type { Dispatch, SetStateAction } from "react"
+import { useState, type Dispatch, type SetStateAction } from "react"
+import { renameWorkspace } from "@src/store/workspace/workspaceSlice"
+import { useAppDispatch } from "@src/store/hook"
 
 export function NavMain({
   items,
@@ -44,65 +45,85 @@ export function NavMain({
   onWorkspaceSelect: Dispatch<SetStateAction<number | undefined>>
 }) {
 
+  const [editingWorkspaceId, setEditingWorkspaceId] = useState<number | null>(null)
+  const [value, setValue] = useState("")
+  const dispatch = useAppDispatch()
   const { isMobile } = useSidebar()
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="flex justify-between">
-        workspace
+        <h1 className=" text-white-400">
+          workspace
+        </h1>
         <SidebarMenuButton className="w-auto" >
           <IconFolderPlus />
         </SidebarMenuButton>
       </SidebarGroupLabel>
-
-      <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            defaultOpen={true}
-            className="group/collapsible"
-            render={<SidebarMenuItem />}
-          >
-            <CollapsibleTrigger
-              className={cn(item.id === activeWorkspaceId && "bg-muted")}
-              onClick={() => onWorkspaceSelect(item.id)}
-              render={<SidebarMenuButton tooltip={item.title} />}
+      <SidebarMenu >
+        {items.map((item) => {
+          return (
+            <Collapsible
+              key={item.title}
+              defaultOpen={true}
+              className="group/collapsible"
+              render={<SidebarMenuItem />}
             >
-              <IconFolderFilled color="#f97316" />
-              <span>{item.title}</span>
-
-            </CollapsibleTrigger>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <SidebarMenuAction
-                    showOnHover
-                    className="aria-expanded:bg-muted"
+              <CollapsibleTrigger
+                className={cn(item.id === activeWorkspaceId && "bg-gray-500/20", "hover:bg-gray-500/20 hover:text-white-400 ")}
+                onClick={() => onWorkspaceSelect(item.id)}
+                render={<SidebarMenuButton tooltip={item.title} />}
+              >
+                <IconFolderFilled color="#f97316" />
+                {editingWorkspaceId === item.id ? (
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(event) => setValue(event.target.value)}
+                    onBlur={() => {
+                      dispatch(renameWorkspace({ id: item.id, workspaceName: value }))
+                      setEditingWorkspaceId(null)
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.currentTarget.blur()
+                      }
+                    }}
+                    autoFocus
                   />
+                ) : (
+                  <span onDoubleClick={() => {
+                    setValue(item.title)
+                    setEditingWorkspaceId(item.id)
+                  }}>{item.title}</span>)
                 }
-              >
-                <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} />
-                <span className="sr-only">More</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-fit"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <HugeiconsIcon icon={FolderIcon} strokeWidth={2} />
-                  <span>Change name</span>
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive">
-                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Collapsible>
-
-        ))}
+              </CollapsibleTrigger>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <SidebarMenuAction
+                      showOnHover
+                      className="aria-expanded:bg-muted"
+                    />
+                  }
+                >
+                  <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} />
+                  <span className="sr-only">More</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-fit"
+                  side={isMobile ? "bottom" : "right"}
+                  align={isMobile ? "end" : "start"}
+                >
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem variant="destructive">
+                    <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
+                    <span>Delete Project</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </Collapsible>
+          )
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )

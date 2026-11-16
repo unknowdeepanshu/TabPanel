@@ -1,4 +1,4 @@
-import type { Project as WorkspaceProject } from "@/type/workspace";
+import type { Project as WorkspaceProject } from "@src/type/workspace";
 import { IconFolderFilled } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";

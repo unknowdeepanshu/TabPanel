@@ -1,10 +1,10 @@
-import { CardDemo } from "@/components/dashboard/Dahboard";
+import { CardDemo } from "@src/components/dashboard/Dahboard";
 import { StrictMode, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import cssText from "../../index.css?inline";
-import { useAppSelector } from "@/store/hook";
+import { useAppSelector } from "@src/store/hook";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
+import { store } from "@src/store/store";
 
 export default function TabPlanIframe() {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);

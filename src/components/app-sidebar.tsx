@@ -1,12 +1,12 @@
 import * as React from "react"
-import { NavMain } from "@/components/nav-main"
+import { NavMain } from "@src/components/nav-main"
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { useAppSelector } from "@/store/hook"
+} from "@src/components/ui/sidebar"
+import { useAppSelector } from "@src/store/hook"
 import type { Dispatch, SetStateAction } from "react"
 
 

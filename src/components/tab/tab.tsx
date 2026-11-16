@@ -1,6 +1,6 @@
 import { IconExternalLinkFilled, IconDotsVerticalFilled } from '@tabler/icons-react';
 import { IconWorld } from '@tabler/icons-react';
-import type { Tab as WorkspaceTab } from "@/type/workspace";
+import type { Tab as WorkspaceTab } from "@src/type/workspace";
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import { useState } from "react";
@@ -45,7 +45,7 @@ function TabsCard({ tab, isSelected, onSelect }: TabsCardProps) {
         <>
             <button
                 type="button"
-                className={`flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-2xl border-2 border-gray-700/30 bg-white p-3 text-left hover:bg-black-200/10 ${isSelected ? "ring-2 ring-orange-400" : ""
+                className={`flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-2xl border-2 border-gray-700/30  p-3 text-left hover:bg-black-200/5 ${isSelected ? "ring-2 bg-black-200/5 ring-orange-400" : ""
                     }`}
                 onClick={() => onSelect(tab.id)}
             >

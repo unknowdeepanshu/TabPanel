@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Workspace, Project, WorkspaceState } from "@/type/workspace";
+import type { Workspace, Project, WorkspaceState } from "@src/type/workspace";
 import { filledWorkspaceData } from "./thunkapi/workspaceThunk";
 
 const initialState: WorkspaceState = {
@@ -25,8 +25,20 @@ export const workspaceSlice = createSlice({
         state.activeWorkspaceId = state.workspaces[0]?.id ?? null;
       }
     },
-    setActiveWorkspace: (state, action: PayloadAction<number | null>) => {
-      state.activeWorkspaceId = action.payload;
+    renameWorkspace: (
+      state,
+      action: PayloadAction<{
+        id: number | null;
+        workspaceName: string | null;
+      }>,
+    ) => {
+      const workspace = state.workspaces.find(
+        (item) => item.id === action.payload.id,
+      );
+
+      if (workspace && action.payload.workspaceName !== null) {
+        workspace.workspaceName = action.payload.workspaceName;
+      }
     },
     addProject: (
       state,
@@ -66,7 +78,7 @@ export const workspaceSlice = createSlice({
 export const {
   addWorkspace,
   removeWorkspace,
-  setActiveWorkspace,
+  renameWorkspace,
   addProject,
   removeProject,
 } = workspaceSlice.actions;

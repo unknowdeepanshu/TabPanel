@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import type { Tab, Workspace } from "@/type/workspace";
+import type { Tab, Workspace } from "@src/type/workspace";
 
 type BrowserTab = {
   id?: number;

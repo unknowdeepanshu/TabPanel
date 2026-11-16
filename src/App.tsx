@@ -1,7 +1,7 @@
 import "./App.css";
-import Page from "@/components/dashboard/Dahboard";
-import { useAppDispatch } from "@/store/hook"
-import { filledWorkspaceData } from "@/store/workspace/thunkapi/workspaceThunk"
+import Page from "@src/components/dashboard/Dahboard";
+import { useAppDispatch } from "@src/store/hook"
+import { filledWorkspaceData } from "@src/store/workspace/thunkapi/workspaceThunk"
 import { useEffect } from "react";
 
 function App() {

@@ -23,8 +23,8 @@
     "noFallthroughCasesInSwitch": true,
     /* alias paths*/
     "paths": {
-      "@/*": ["./src/*"]
+      "@src/*": ["./src/*"]
     }
   },
-  "include": ["src", "background.js", "dist/src/background copy.js"]
+  "include": ["src", "entrypoints", "wxt.config.ts"]
 }

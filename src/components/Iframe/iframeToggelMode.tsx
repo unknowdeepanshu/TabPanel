@@ -1,8 +1,8 @@
 import { Moon, Sun, Monitor } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { setTheme } from "@/store/iframeDarkmode/darkmodeSlice";
+import { Button } from "@src/components/ui/button";
+import { setTheme } from "@src/store/iframeDarkmode/darkmodeSlice";
 
-import { useAppDispatch } from "@/store/hook";
+import { useAppDispatch } from "@src/store/hook";
 export function IframeMode() {
   const dispatch = useAppDispatch();
   return (
