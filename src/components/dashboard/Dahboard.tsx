@@ -38,7 +38,9 @@ export default function Page() {
     <SidebarProvider>
       <AppSidebar workspaceId={workspaceId} setWorkspaceId={setWorkspaceId} />
       <SidebarInset className="bg-white/70">
-        <div className="flex flex-1 flex-col gap-4 bg-white/60 p-4 text-black">
+        <div
+          className="flex flex-1 flex-col gap-4 bg-white/60 p-4 text-black"
+        >
           {workspaceId == undefined ? (<div className="flex h-full w-auto justify-center items-center">
             <h1 className="text-2xl"> Select workspace</h1>
 

@@ -52,6 +52,21 @@ export const workspaceSlice = createSlice({
         workspace.projects.push(action.payload.project);
       }
     },
+    renameProject: (
+      state,
+      action: PayloadAction<{
+        projectId: number;
+        ProjectName: string;
+      }>,
+    ) => {
+      const project = state.workspaces
+        .flatMap((workspace) => workspace.projects)
+        .find((project) => project.id === action.payload.projectId);
+
+      if (project && action.payload.ProjectName !== null) {
+        project.name = action.payload.ProjectName;
+      }
+    },
     removeProject: (
       state,
       action: PayloadAction<{ workspaceId: number; projectId: number }>,
@@ -81,6 +96,7 @@ export const {
   renameWorkspace,
   addProject,
   removeProject,
+  renameProject,
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

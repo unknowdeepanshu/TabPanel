@@ -245,7 +245,7 @@ function Sidebar({
         >
           {children}
         </div>
-        <div className="h-auto w-4 flex justify-center flex-col items-center">
+        <div className="h-auto w-4 flex justify-center bg-background flex-col items-center">
           <SidebarTrigger />
         </div>
       </div>

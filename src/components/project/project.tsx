@@ -2,6 +2,9 @@ import type { Project as WorkspaceProject } from "@src/type/workspace";
 import { IconFolderFilled } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import { useAppDispatch } from "@src/store/hook";
+import { useState } from "react";
+import { renameProject } from "@src/store/workspace/workspaceSlice";
 
 interface ProjectProps {
     projects: WorkspaceProject[];
@@ -42,6 +45,9 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
+    const [editingProjectId, setEditingProjectId] = useState<number | null>(null)
+    const [value, setValue] = useState("")
+    const dispatch = useAppDispatch()
     return (
         <button
             type="button"
@@ -51,7 +57,28 @@ function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
         >
             <IconFolderFilled color="#f97316" width="5rem" height="5rem" />
             <div className="flex flex-col justify-center p-3 text-left">
-                <h1>{project.name}</h1>
+                {editingProjectId === project.id ?
+                    <input
+                        type="text"
+                        value={value}
+                        onChange={(event) => setValue(event.target.value)}
+                        onBlur={() => {
+                            dispatch(renameProject({ projectId: project.id, ProjectName: value }))
+                        }}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                event.currentTarget.blur()
+                            }
+                        }}
+                        autoFocus
+                    />
+                    : (
+                        <h1 onDoubleClick={() => {
+                            setValue(project.name)
+                            setEditingProjectId(project.id)
+                        }}>{project.name}</h1>
+                    )
+                }
                 <h1>{project.tabNumber}</h1>
             </div>
         </button>

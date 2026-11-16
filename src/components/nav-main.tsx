@@ -50,7 +50,7 @@ export function NavMain({
   const dispatch = useAppDispatch()
   const { isMobile } = useSidebar()
   return (
-    <SidebarGroup>
+    <SidebarGroup className="dark">
       <SidebarGroupLabel className="flex justify-between">
         <h1 className=" text-white-400">
           workspace
@@ -97,12 +97,12 @@ export function NavMain({
                   }}>{item.title}</span>)
                 }
               </CollapsibleTrigger>
-              <DropdownMenu>
+              <DropdownMenu  >
                 <DropdownMenuTrigger
                   render={
                     <SidebarMenuAction
                       showOnHover
-                      className="aria-expanded:bg-muted"
+                      className="aria-expanded:bg-muted "
                     />
                   }
                 >
@@ -110,7 +110,7 @@ export function NavMain({
                   <span className="sr-only">More</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-fit"
+                  className="w-fit dark"
                   side={isMobile ? "bottom" : "right"}
                   align={isMobile ? "end" : "start"}
                 >
