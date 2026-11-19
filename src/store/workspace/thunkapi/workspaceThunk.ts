@@ -78,6 +78,7 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
         id: workspaceId,
         workspaceName: "Unknown",
         projects: tabsDatas,
+        res: response,
       },
     ];
   },

@@ -16,6 +16,7 @@ type Workspace = {
   id: number;
   workspaceName: string;
   projects: Project[];
+  res: any;
 };
 
 interface WorkspaceState {

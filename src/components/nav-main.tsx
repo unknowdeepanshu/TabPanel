@@ -51,7 +51,7 @@ export function NavMain({
   const { isMobile } = useSidebar()
   return (
     <SidebarGroup className="dark">
-      <SidebarGroupLabel className="flex justify-between">
+      <SidebarGroupLabel className="flex justify-between p-0">
         <h1 className=" text-white-400">
           workspace
         </h1>

@@ -12,7 +12,14 @@ export default defineConfig({
     name: "TabPlan",
     version: "1.0.0",
     description: "Manage and organize browser tabs by project",
-    permissions: ["activeTab", "scripting", "tabs", "tabGroups", "windows"],
+    permissions: [
+      "activeTab",
+      "scripting",
+      "sessions",
+      "tabs",
+      "tabGroups",
+      "windows",
+    ],
     commands: {
       "toggle-tabplan": {
         suggested_key: {

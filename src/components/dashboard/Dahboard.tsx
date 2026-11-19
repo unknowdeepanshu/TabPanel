@@ -11,7 +11,8 @@ import {
 } from "@src/components/ui/sidebar"
 import Tabs from "../tab/tab";
 import { useAppSelector } from "@src/store/hook";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { browser } from "wxt/browser";
 
 export function CardDemo() {
   return (
@@ -34,12 +35,17 @@ export default function Page() {
   const projects = workspace?.projects ?? []
   const selectedProject = projects.find((item) => item.id === projectId)
   console.log("this is workid", workspaceId)
+  useEffect(() => {
+    browser.runtime.sendMessage("session")
+      .then((res) => console.log("this is session data", res))
+      .catch((error) => console.error("Unable to retrieve session data", error))
+  }, [])
   return (
     <SidebarProvider>
       <AppSidebar workspaceId={workspaceId} setWorkspaceId={setWorkspaceId} />
-      <SidebarInset className="bg-white/70">
+      <SidebarInset className="bg-white p-4">
         <div
-          className="flex flex-1 flex-col gap-4 bg-white/60 p-4 text-black"
+          className="flex flex-1 flex-col gap-4 bg-white p-4 text-black"
         >
           {workspaceId == undefined ? (<div className="flex h-full w-auto justify-center items-center">
             <h1 className="text-2xl"> Select workspace</h1>

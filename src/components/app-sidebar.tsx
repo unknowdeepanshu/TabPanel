@@ -28,9 +28,11 @@ export function AppSidebar({
   const workspacesName = datas?.workspaces.map((workspaceState) => {
     return {
       id: workspaceState?.id,
-      title: workspaceState?.workspaceName
+      title: workspaceState?.workspaceName,
+      res: workspaceState.res
     }
   })
+  console.log("sdyfsd", workspacesName)
   return (
     <>
       <Sidebar className=" text-white-400" collapsible="icon" {...props}>
@@ -51,7 +53,7 @@ export function AppSidebar({
 
 function VerticalLinesvg() {
   return (<>
-    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: "3rem", width: "3rem" }} width="4rem" height="10rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" widths="3rem"><path d="M12 5v14"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: "3rem", width: "3rem" }} width="4rem" height="10rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" widths="3rem"><path d="M12 5v14"></path></svg>
   </>);
 }
 
