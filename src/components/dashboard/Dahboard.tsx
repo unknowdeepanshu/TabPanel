@@ -32,7 +32,7 @@ export default function Page() {
   );
   const projects = workspace?.projects ?? [];
   const selectedProject = projects.find((item) => item.id === projectId);
-  console.log("this is workid", selectedProject);
+  console.log("this is workid", workspaceData);
   useEffect(() => {
     browser.runtime
       .sendMessage("session")

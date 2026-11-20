@@ -10,7 +10,7 @@ type BrowserTab = {
 };
 
 type BrowserWindow = {
-  windowId?: number;
+  windowId?: number | undefined;
   tabs?: BrowserTab[];
 };
 
@@ -59,7 +59,7 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
     const workspaceId = createUniqueId(usedIds);
     const tabsDatas = (response.data ?? []).map((browserWindow) => {
       const tabs: Tab[] = (browserWindow.tabs ?? []).map((tab) => ({
-        id: createUniqueId(usedIds),
+        id: tab.id ?? createUniqueId(usedIds),
         favIconUrl: tab.favIconUrl ?? "",
         link: tab.url ?? "",
         title: tab.title ?? "Unknown",
@@ -67,7 +67,7 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
       }));
 
       return {
-        id: createUniqueId(usedIds),
+        id: browserWindow.windowId ?? createUniqueId(usedIds),
         name: "Unknown",
         tabNumber: tabs.length,
         tabs,
