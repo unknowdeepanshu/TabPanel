@@ -4,7 +4,6 @@ import {
 } from "@src/components/ui/collapsible"
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
@@ -23,8 +22,9 @@ import { MoreHorizontalCircle01Icon, Delete02Icon } from "@hugeicons/core-free-i
 import { IconFolderPlus, IconFolderFilled } from '@tabler/icons-react';
 import { cn } from "cn"
 import { useState, type Dispatch, type SetStateAction } from "react"
-import { renameWorkspace } from "@src/store/workspace/workspaceSlice"
+import { addWorkspace, renameWorkspace } from "@src/store/workspace/workspaceSlice"
 import { useAppDispatch } from "@src/store/hook"
+import { createUniqueId, usedIds } from "@src/utils/creationId"
 
 export function NavMain({
   items,
@@ -49,17 +49,33 @@ export function NavMain({
   const [value, setValue] = useState("")
   const dispatch = useAppDispatch()
   const { isMobile } = useSidebar()
+
+  const handleAddWorkspace = () => {
+    const id = createUniqueId(usedIds)
+    dispatch(addWorkspace({
+      id,
+      workspaceName: "Untitled workspace",
+      projects: [],
+      res: null,
+    }))
+    onWorkspaceSelect(id)
+    setValue("Untitled workspace")
+    setEditingWorkspaceId(id)
+  }
+
   return (
     <SidebarGroup className="dark">
-      <SidebarGroupLabel className="flex justify-between p-0">
-        <h1 className=" text-white-400">
-          workspace
-        </h1>
-        <SidebarMenuButton className="w-auto" >
-          <IconFolderPlus />
-        </SidebarMenuButton>
-      </SidebarGroupLabel>
-      <SidebarMenu >
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            tooltip="Add workspace"
+            onClick={handleAddWorkspace}
+            className="text-white-400 flex justify-between"
+          >
+            <span className="group-data-[collapsible=icon]:hidden"> workspace</span>
+            <IconFolderPlus />
+          </SidebarMenuButton>
+        </SidebarMenuItem>
         {items.map((item) => {
           return (
             <Collapsible

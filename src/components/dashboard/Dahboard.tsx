@@ -44,7 +44,7 @@ export default function Page() {
   return (
     <SidebarProvider>
       <AppSidebar workspaceId={workspaceId} setWorkspaceId={setWorkspaceId} />
-      <SidebarInset className="bg-white p-4">
+      <SidebarInset className="bg-white p-4 w-3xs">
         <div className="flex flex-1 flex-col gap-4 bg-white p-4 text-black">
           {workspaceId == undefined ? (
             <div className="flex h-full w-auto items-center justify-center">
@@ -60,6 +60,7 @@ export default function Page() {
               </div>
               <div className="rounded-xl bg-white/90 p-4 shadow-sm">
                 <Project
+                  workspaceId={workspaceId}
                   projects={projects}
                   selectedProjectId={projectId}
                   onProjectSelect={(selectedId) => {

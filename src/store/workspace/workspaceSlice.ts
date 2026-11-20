@@ -14,7 +14,7 @@ export const workspaceSlice = createSlice({
   reducers: {
     addWorkspace: (state, action: PayloadAction<Workspace>) => {
       state.workspaces.push(action.payload);
-      state.activeWorkspaceId ??= action.payload.id;
+      state.activeWorkspaceId = action.payload.id;
     },
     removeWorkspace: (state, action: PayloadAction<number>) => {
       state.workspaces = state.workspaces.filter(

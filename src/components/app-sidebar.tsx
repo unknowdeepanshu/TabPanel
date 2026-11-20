@@ -3,12 +3,10 @@ import { NavMain } from "@src/components/nav-main"
 import {
   Sidebar,
   SidebarContent,
-  SidebarHeader,
   SidebarRail,
 } from "@src/components/ui/sidebar"
 import { useAppSelector } from "@src/store/hook"
 import type { Dispatch, SetStateAction } from "react"
-
 
 // This is sample data.
 
@@ -36,8 +34,6 @@ export function AppSidebar({
   return (
     <>
       <Sidebar className=" text-white-400" collapsible="icon" {...props}>
-        <SidebarHeader className="bg-black-100">
-        </SidebarHeader>
         <SidebarContent className="bg-black-100">
           <NavMain
             items={workspacesName}

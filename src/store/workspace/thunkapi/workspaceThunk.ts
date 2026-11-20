@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { Tab, Workspace } from "@src/type/workspace";
+import { createUniqueId, usedIds } from "@src/utils/creationId";
 
 type BrowserTab = {
   id?: number;
@@ -18,17 +19,6 @@ type TabDataResponse = {
   success?: boolean;
   data?: BrowserWindow[];
 };
-
-function createUniqueId(usedIds: Set<number>): number {
-  let id = Math.floor(Math.random() * 1_000_000);
-
-  while (usedIds.has(id)) {
-    id = Math.floor(Math.random() * 1_000_000);
-  }
-
-  usedIds.add(id);
-  return id;
-}
 
 const filledWorkspaceData = createAsyncThunk<Workspace[]>(
   "workspace/fillWorkspaceData",
@@ -55,7 +45,6 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
       throw new Error("Unable to retrieve tab data.");
     }
 
-    const usedIds = new Set<number>();
     const workspaceId = createUniqueId(usedIds);
     const tabsDatas = (response.data ?? []).map((browserWindow) => {
       const tabs: Tab[] = (browserWindow.tabs ?? []).map((tab) => ({
@@ -68,7 +57,7 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
 
       return {
         id: browserWindow.windowId ?? createUniqueId(usedIds),
-        name: "Unknown",
+        name: "Untitled Project",
         tabNumber: tabs.length,
         tabs,
       };
@@ -76,7 +65,7 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
     return [
       {
         id: workspaceId,
-        workspaceName: "Unknown",
+        workspaceName: "Untitled workspace",
         projects: tabsDatas,
         res: response,
       },

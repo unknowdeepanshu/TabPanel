@@ -9,7 +9,7 @@ type Project = {
   id: number;
   name: string;
   tabNumber: number;
-  tabs: Tab[];
+  tabs?: Tab[];
 };
 
 type Workspace = {

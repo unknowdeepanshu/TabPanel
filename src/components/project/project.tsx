@@ -4,27 +4,43 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { useAppDispatch } from "@src/store/hook";
 import { useState } from "react";
-import { renameProject } from "@src/store/workspace/workspaceSlice";
+import { addProject, renameProject } from "@src/store/workspace/workspaceSlice";
+import { createUniqueId, usedIds } from "@src/utils/creationId";
 
 interface ProjectProps {
+    workspaceId: number;
     projects: WorkspaceProject[];
     selectedProjectId?: number;
     onProjectSelect: (projectId: number) => void;
 }
 
-function Project({
+function Project({ workspaceId,
     projects,
     selectedProjectId,
     onProjectSelect,
 }: ProjectProps) {
+    const dispatch = useAppDispatch()
+    const handlAaddProject = () => {
+        const id = createUniqueId(usedIds)
+        dispatch(addProject({
+            workspaceId: workspaceId,
+            project: {
+                id,
+                name: "Untitled Project",
+                tabNumber: 0,
+                tabs: []
+            }
+        }))
+    }
     return (
-        <div className="mt-3 flex w-auto flex-col">
-            <div className="flex w-auto items-center justify-between">
+        <div className="mt-3 flex w-full min-w-0 flex-col">
+            <div className="flex w-full items-center justify-between">
                 <IconFolderFilled color="#f97316" width="2rem" height="2rem" />
-                <Button variant="ghost">Add projects</Button>
+                <Button variant="ghost" onClick={handlAaddProject} >Add projects</Button>
             </div>
             <Separator className="bg-black-200/35" />
-            <div className="mt-3 flex shrink-0 gap-4 overflow-auto">
+
+            <div className="mt-3 flex w-full gap-4 overflow-x-auto pb-2">
                 {projects.map((project) => (
                     <ProjectCard
                         key={project.id}
@@ -33,6 +49,7 @@ function Project({
                         onSelect={onProjectSelect}
                     />
                 ))}
+
             </div>
         </div>
     );
@@ -40,7 +57,7 @@ function Project({
 
 interface ProjectCardProps {
     project: WorkspaceProject;
-    isSelected: boolean;
+    isSelected?: boolean;
     onSelect: (projectId: number) => void;
 }
 
@@ -51,7 +68,7 @@ function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
     return (
         <button
             type="button"
-            className={`flex w-fit rounded-2xl border-2 border-black-200/10 hover:bg-black-200/10 ${isSelected ? "bg-black-200/10" : ""
+            className={`flex w-fit shrink-0 rounded-2xl border-2 border-black-200/10 hover:bg-black-200/10 ${isSelected ? "bg-black-200/10" : ""
                 }`}
             onClick={() => onSelect(project.id)}
         >
