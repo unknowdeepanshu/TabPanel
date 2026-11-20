@@ -9,13 +9,18 @@ interface TabsProps {
     tabs: WorkspaceTab[];
     selectedTabId?: number;
     onTabSelect: (tabId: number) => void;
+    ProjectTitle: string | undefined
 }
 
-function Tabs({ tabs, selectedTabId, onTabSelect }: TabsProps) {
+function Tabs({ tabs, selectedTabId, onTabSelect, ProjectTitle }: TabsProps) {
     return (<>
         <div className='flex w-auto flex-col p-2 rounded-2xl'>
             <div className='w-auto flex items-center justify-between'>
-                <Chrome /> <Button variant="ghost" ><IconDotsVerticalFilled /></Button>
+                <div className='flex items-center'>
+
+                    <Chrome /><h1 className='text-[0.9rem]'>{ProjectTitle}</h1>
+                </div>
+                <Button variant="ghost" ><IconDotsVerticalFilled /></Button>
             </div>
             <Separator className="bg-black-200/35" />
             <div className="mt-3 grid w-full grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-3">
