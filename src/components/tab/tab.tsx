@@ -1,10 +1,22 @@
 import { IconExternalLinkFilled, IconDotsVerticalFilled } from '@tabler/icons-react';
 import { IconWorld } from '@tabler/icons-react';
 import type { Tab as WorkspaceTab } from "@src/type/workspace";
-import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import { useState } from "react";
-
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@src/components/ui/dropdown-menu"
+import { HugeiconsIcon } from "@hugeicons/react"
+import {
+    SidebarMenuAction,
+    useSidebar,
+} from "@src/components/ui/sidebar"
+import { IconDownloadFilled, IconExternalLink, IconSquareX } from '@tabler/icons-react';
+import { Delete02Icon } from "@hugeicons/core-free-icons"
 interface TabsProps {
     tabs: WorkspaceTab[];
     selectedTabId?: number;
@@ -13,14 +25,52 @@ interface TabsProps {
 }
 
 function Tabs({ tabs, selectedTabId, onTabSelect, ProjectTitle }: TabsProps) {
+    const { isMobile } = useSidebar()
+
     return (<>
         <div className='flex w-auto flex-col p-2 rounded-2xl'>
-            <div className='w-auto flex items-center justify-between'>
+            <div className='w-auto flex items-center relative justify-between'>
                 <div className='flex items-center'>
 
                     <Chrome /><h1 className='text-[0.9rem]'>{ProjectTitle}</h1>
                 </div>
-                <Button variant="ghost" ><IconDotsVerticalFilled /></Button>
+                {/* <Button variant="ghost" ><IconDotsVerticalFilled /></Button> */}
+                <DropdownMenu  >
+                    <DropdownMenuTrigger
+                        className="md:opacity-100"
+                        render={
+                            <SidebarMenuAction
+                                showOnHover
+                                className="aria-expanded:bg-muted"
+                            />
+                        }
+                    >
+                        <IconDotsVerticalFilled />
+                        <span className="sr-only">More</span>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        className="w-fit "
+                        side={isMobile ? "bottom" : "right"}
+                        align={isMobile ? "end" : "start"}
+                    >
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem variant="default">
+                            <IconDownloadFilled />
+                            <span>Save session </span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem variant="default">
+                            <IconExternalLink />
+                            <span>Open all Tabs</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem >
+                            <IconSquareX />
+                            <span>Close all Tabs</span>
+                        </DropdownMenuItem> <DropdownMenuItem variant="destructive">
+                            <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
+                            <span>Delete Project</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
             <Separator className="bg-black-200/35" />
             <div className="mt-3 grid w-full grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-3">

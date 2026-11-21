@@ -85,9 +85,9 @@ export function NavMain({
               render={<SidebarMenuItem />}
             >
               <CollapsibleTrigger
-                className={cn(item.id === activeWorkspaceId && "bg-gray-500/20", "hover:bg-gray-500/20 hover:text-white-400 ")}
+                className={cn("hover:bg-gray-500/20 mt-1 hover:text-white-400 ")}
                 onClick={() => onWorkspaceSelect(item.id)}
-                render={<SidebarMenuButton tooltip={item.title} />}
+                render={<SidebarMenuButton tooltip={item.title} isActive={item.id === activeWorkspaceId} />}
               >
                 <IconFolderFilled color="#f97316" />
                 {editingWorkspaceId === item.id ? (
@@ -115,6 +115,7 @@ export function NavMain({
               </CollapsibleTrigger>
               <DropdownMenu  >
                 <DropdownMenuTrigger
+                  style={{ top: "0.7rem" }}
                   render={
                     <SidebarMenuAction
                       showOnHover

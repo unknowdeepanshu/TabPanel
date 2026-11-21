@@ -4,13 +4,14 @@ import {
   Sidebar,
   SidebarContent,
   SidebarRail,
+  SidebarFooter
 } from "@src/components/ui/sidebar"
 import { useAppSelector } from "@src/store/hook"
 import type { Dispatch, SetStateAction } from "react"
-
-// This is sample data.
-
-
+import { IconSettings } from '@tabler/icons-react';
+import {
+  SidebarMenuButton
+} from "@src/components/ui/sidebar"
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   workspaceId?: number
   setWorkspaceId: Dispatch<SetStateAction<number | undefined>>
@@ -30,10 +31,11 @@ export function AppSidebar({
       res: workspaceState.res
     }
   })
+
   console.log("sdyfsd", workspacesName)
   return (
     <>
-      <Sidebar className=" text-white-400" collapsible="icon" {...props}>
+      <Sidebar className="dark text-white-400" collapsible="icon" {...props}>
         <SidebarContent className="bg-black-100">
           <NavMain
             items={workspacesName}
@@ -41,6 +43,17 @@ export function AppSidebar({
             onWorkspaceSelect={setWorkspaceId}
           />
         </SidebarContent>
+        <SidebarFooter className="dark">
+          <SidebarMenuButton
+            tooltip="Setting"
+            onClick={() => setWorkspaceId(NaN)}
+            isActive={Number.isNaN(workspaceId)}
+            className="text-white-400 "
+          >
+            <IconSettings />
+            <span className="group-data-[collapsible=icon]:hidden">Setting</span>
+          </SidebarMenuButton>
+        </SidebarFooter>
         <SidebarRail />
       </Sidebar>
     </>

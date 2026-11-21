@@ -66,14 +66,25 @@ function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
     const [value, setValue] = useState("")
     const dispatch = useAppDispatch()
     return (
-        <button
-            type="button"
+        <div
+            role="button"
+            tabIndex={0}
             className={`flex w-fit shrink-0 rounded-2xl border-2 border-black-200/10 hover:bg-black-200/10 ${isSelected ? "bg-black-200/10" : ""
                 }`}
             onClick={() => onSelect(project.id)}
+            onDoubleClick={() => {
+                setValue(project.name)
+                setEditingProjectId(project.id)
+            }}
+            onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault()
+                    onSelect(project.id)
+                }
+            }}
         >
             <IconFolderFilled color="#f97316" width="5rem" height="5rem" />
-            <div className="flex flex-col justify-center p-3 text-left">
+            <div className="flex flex-col justify-center p-3 text-left" >
                 {editingProjectId === project.id ?
                     <input
                         type="text"
@@ -90,15 +101,12 @@ function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
                         autoFocus
                     />
                     : (
-                        <h1 onDoubleClick={() => {
-                            setValue(project.name)
-                            setEditingProjectId(project.id)
-                        }}>{project.name}</h1>
+                        <span>{project.name}</span>
                     )
                 }
                 <h1>{project.tabNumber}</h1>
             </div>
-        </button>
+        </div>
     );
 }
 
