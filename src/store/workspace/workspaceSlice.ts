@@ -81,7 +81,81 @@ export const workspaceSlice = createSlice({
         );
       }
     },
+    addTab: (state, action: PayloadAction<{ Tab: any }>) => {
+      const project = state.workspaces
+        .flatMap((workspace) => workspace.projects)
+        .find((project) => project.id === action.payload.Tab.windowId);
+      if (!project) {
+        console.error(
+          "Unable to find project for browser window:",
+          action.payload.Tab.windowId,
+        );
+        return;
+      }
+
+      const tabId = action.payload.Tab.id;
+      if (
+        typeof tabId === "number" &&
+        project.tabs?.some((tab) => tab.id === tabId)
+      ) {
+        return;
+      }
+
+      project.tabs ??= [];
+      project.tabs.push(action.payload.Tab);
+      project.tabNumber = project.tabs.length;
+    },
+    removeTab: (
+      state,
+      action: PayloadAction<{ tabId: number; windowId: number }>,
+    ) => {
+      const project = state.workspaces
+        .flatMap((workspace) => workspace.projects)
+        .find((project) => project.id === action.payload.windowId);
+      if (!project) {
+        console.error(
+          "Unable to find project for browser window:",
+          action.payload.windowId,
+        );
+        return;
+      }
+      const tabId = action.payload.tabId;
+      if (typeof tabId === "number" && project.tabs) {
+        project.tabs = project.tabs.filter((tab) => tab.id !== tabId);
+        project.tabNumber = project.tabs.length;
+      }
+    },
+    updateTab: (state, action: PayloadAction<{ Tab: any }>) => {
+      const project = state.workspaces
+        .flatMap((workspace) => workspace.projects)
+        .find((project) => project.id === action.payload.Tab.windowId);
+      if (!project) {
+        console.error(
+          "Unable to find project for browser window:",
+          action.payload.Tab.windowId,
+        );
+        return;
+      }
+
+      const tabId = action.payload.Tab.id;
+      project.tabs ??= [];
+
+      if (typeof tabId === "number") {
+        const existingIndex = project.tabs.findIndex((tab) => tab.id === tabId);
+
+        if (existingIndex !== -1) {
+          project.tabs[existingIndex] = action.payload.Tab;
+        } else {
+          project.tabs.push(action.payload.Tab);
+        }
+      } else {
+        project.tabs.push(action.payload.Tab);
+      }
+
+      project.tabNumber = project.tabs.length;
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(filledWorkspaceData.fulfilled, (state, action) => {
       state.workspaces = action.payload;
@@ -97,6 +171,9 @@ export const {
   addProject,
   removeProject,
   renameProject,
+  addTab,
+  removeTab,
+  updateTab,
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

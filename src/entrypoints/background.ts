@@ -27,62 +27,91 @@ export default defineBackground(() => {
   }
 
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message.type !== "GET_TAB_DATA") {
-      return false;
-    }
+    const handleMessage = async () => {
+      switch (message.type) {
+        case "GET_TAB_DATA":
+          const windows = await browser.windows.getAll();
+          const data = await Promise.all(
+            windows.map(async (window) => {
+              if (window.id === undefined) {
+                throw new Error("Browser returned a window without an id.");
+              }
 
-    void (async () => {
-      const windows = await browser.windows.getAll();
-      const data = await Promise.all(
-        windows.map(async (window) => {
-          if (window.id === undefined) {
-            throw new Error("Browser returned a window without an id.");
-          }
+              const tabs = await browser.tabs.query({ windowId: window.id });
+              const groups = await browser.tabGroups.query({
+                windowId: window.id,
+              });
+              const groupsWithTabs = await Promise.all(
+                groups.map(async (group) => ({
+                  ...group,
+                  tabs: await browser.tabs.query({ groupId: group.id }),
+                })),
+              );
 
-          const tabs = await browser.tabs.query({ windowId: window.id });
-          const groups = await browser.tabGroups.query({ windowId: window.id });
-          const groupsWithTabs = await Promise.all(
-            groups.map(async (group) => ({
-              ...group,
-              tabs: await browser.tabs.query({ groupId: group.id }),
-            })),
+              return { windowId: window.id, tabs, groups: groupsWithTabs };
+            }),
           );
+          return { success: true, data };
 
-          return { windowId: window.id, tabs, groups: groupsWithTabs };
-        }),
-      );
+        case "OPEN_ALL_TABS":
+          const urls = message.urls as string[];
+          const newWindow = await browser.windows.create({
+            url: urls.length > 0 ? urls : undefined,
+            type: "normal",
+            focused: true,
+            state: "maximized",
+          });
+          return {
+            success: true,
+            windowId: newWindow?.id,
+            tabs: newWindow?.tabs,
+          };
 
-      sendResponse({ success: true, data, check: windows });
-    })().catch((error: unknown) => {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      sendResponse({ success: false, error: errorMessage });
-    });
+        default:
+          break;
+      }
+    };
+    handleMessage()
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({
+          success: false,
+          error: error.message,
+        });
+      });
 
     return true;
   });
-  browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message !== "session") {
-      return false;
-    }
-
-    void (async () => {
-      try {
-        const data = await browser.sessions.getDevices();
-
-        sendResponse({
-          success: true,
-          data,
-        });
-      } catch (error) {
-        sendResponse({
-          success: false,
-          error: String(error),
-        });
-      }
-    })();
-
-    return true;
+  // tracking browser tabs and windowId
+  browser.tabs.onCreated.addListener((tab) => {
+    console.log("NEW TAB CREATED:", tab);
+    void browser.runtime
+      .sendMessage({
+        type: "TAB_CREATED",
+        payload: tab,
+      })
+      .catch((error) => {
+        console.log("No React listener available:", error);
+      });
+  });
+  browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
+    browser.runtime
+      .sendMessage({
+        type: "TAB_REMOVED",
+        payload: {
+          tabId,
+          windowId: removeInfo.windowId,
+        },
+      })
+      .catch(() => {});
+  });
+  browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    browser.runtime
+      .sendMessage({
+        type: "TAB_UPDATED",
+        payload: tab,
+      })
+      .catch(() => {});
   });
 
   browser.action.onClicked.addListener(() => {

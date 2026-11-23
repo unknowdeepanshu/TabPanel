@@ -1,10 +1,5 @@
-type Tab = {
-  id: number;
-  favIconUrl: string;
-  link: string;
-  title: string;
-  groupId: number;
-};
+type Tab = any;
+
 type Project = {
   id: number;
   name: string;

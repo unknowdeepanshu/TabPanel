@@ -14,7 +14,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@src/components/ui/dropdown-menu"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -22,7 +21,7 @@ import { MoreHorizontalCircle01Icon, Delete02Icon } from "@hugeicons/core-free-i
 import { IconFolderPlus, IconFolderFilled } from '@tabler/icons-react';
 import { cn } from "cn"
 import { useState, type Dispatch, type SetStateAction } from "react"
-import { addWorkspace, renameWorkspace } from "@src/store/workspace/workspaceSlice"
+import { removeWorkspace, addWorkspace, renameWorkspace } from "@src/store/workspace/workspaceSlice"
 import { useAppDispatch } from "@src/store/hook"
 import { createUniqueId, usedIds } from "@src/utils/creationId"
 
@@ -62,7 +61,10 @@ export function NavMain({
     setValue("Untitled workspace")
     setEditingWorkspaceId(id)
   }
+  const handleDeleteWorkspace = (id: number) => {
+    dispatch(removeWorkspace(id))
 
+  }
   return (
     <SidebarGroup className="dark">
       <SidebarMenu>
@@ -131,8 +133,9 @@ export function NavMain({
                   side={isMobile ? "bottom" : "right"}
                   align={isMobile ? "end" : "start"}
                 >
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem variant="destructive">
+                  <DropdownMenuItem
+                    onClick={() => handleDeleteWorkspace(item.id)}
+                    variant="destructive">
                     <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
                     <span>Delete Project</span>
                   </DropdownMenuItem>

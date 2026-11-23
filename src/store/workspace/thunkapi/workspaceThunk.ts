@@ -47,13 +47,7 @@ const filledWorkspaceData = createAsyncThunk<Workspace[]>(
 
     const workspaceId = createUniqueId(usedIds);
     const tabsDatas = (response.data ?? []).map((browserWindow) => {
-      const tabs: Tab[] = (browserWindow.tabs ?? []).map((tab) => ({
-        id: tab.id ?? createUniqueId(usedIds),
-        favIconUrl: tab.favIconUrl ?? "",
-        link: tab.url ?? "",
-        title: tab.title ?? "Unknown",
-        groupId: tab.groupId ?? 0,
-      }));
+      const tabs: Tab[] = (browserWindow.tabs ?? []).map((tab) => tab);
 
       return {
         id: browserWindow.windowId ?? createUniqueId(usedIds),
