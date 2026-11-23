@@ -32,7 +32,6 @@ export function AppSidebar({
     }
   })
 
-  console.log("sdyfsd", workspacesName)
   return (
     <>
       <Sidebar className="dark text-white-400" collapsible="icon" {...props}>

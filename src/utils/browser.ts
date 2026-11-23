@@ -31,5 +31,4 @@ export async function openAllTabs({
       },
     }),
   );
-  console.log("create tabs data", data);
 }

@@ -5,6 +5,7 @@ import { useAppSelector } from "@src/store/hook";
 import { useState, useEffect } from "react";
 import { browser } from "wxt/browser";
 import { WorkspacePlanner } from "../workspacePlaner/workspacePlaner";
+import useBrowserTrack from "@src/hooks/useBrowserTracking";
 
 export function CardDemo() {
   return (
@@ -26,11 +27,10 @@ export default function Page() {
     (item) => item.id === workspaceId,
   );
   const projects = workspace?.projects ?? [];
-  console.log("this is workid", workspaceData);
+  useBrowserTrack(workspaceId)
   useEffect(() => {
     browser.runtime
       .sendMessage("session")
-      .then((res) => console.log("this is session data", res))
       .catch((error) =>
         console.error("Unable to retrieve session data", error),
       );

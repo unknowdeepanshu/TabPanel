@@ -91,7 +91,22 @@ export default defineBackground(() => {
       .catch(() => {});
   });
   // tracking browser windows
-
+  browser.windows.onCreated.addListener((window) => {
+    browser.runtime
+      .sendMessage({
+        type: "WINDOW_CREATED",
+        payload: window,
+      })
+      .catch(() => {});
+  });
+  browser.windows.onRemoved.addListener((window) => {
+    browser.runtime
+      .sendMessage({
+        type: "WINDOW_CLOSED",
+        payload: window,
+      })
+      .catch(() => {});
+  });
   let tabPlanWindowId: number | null = null;
 
   async function openTabPlan() {

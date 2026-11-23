@@ -32,7 +32,7 @@ function Tabs({ workspaceId, tabs, selectedTabId, onTabSelect, ProjectTitle }: T
     const { isMobile } = useSidebar()
     const handleTabOpen = () => {
         const TabUrls = tabs.map((tab) => (tab.url))
-        openAllTabs({ workspaceId, urls: TabUrls, windowsId: tabs[0].windowId, })
+        openAllTabs({ workspaceId: workspaceId, urls: TabUrls, windowsId: tabs[0].windowId, })
     }
     return (<>
         <div className='flex w-auto flex-col p-2 rounded-2xl'>
