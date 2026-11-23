@@ -43,6 +43,7 @@ export function WorkspacePlanner({
             </div>
             <div className="rounded-xl bg-white/80 p-1 shadow-sm">
                 <Tabs
+                    workspaceId={workspaceId}
                     ProjectTitle={selectedProject?.name}
                     tabs={selectedProject?.tabs ?? []}
                     selectedTabId={selectedTabId}

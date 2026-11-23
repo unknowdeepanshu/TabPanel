@@ -21,15 +21,19 @@ import { openAllTabs } from '@src/utils/browser';
 
 
 interface TabsProps {
+    workspaceId?: number;
     tabs: WorkspaceTab[];
     selectedTabId?: number;
     onTabSelect: (tabId: number) => void;
     ProjectTitle: string | undefined
 }
 
-function Tabs({ tabs, selectedTabId, onTabSelect, ProjectTitle }: TabsProps) {
+function Tabs({ workspaceId, tabs, selectedTabId, onTabSelect, ProjectTitle }: TabsProps) {
     const { isMobile } = useSidebar()
-    const TabUrls = tabs.map((tab) => (tab.url))
+    const handleTabOpen = () => {
+        const TabUrls = tabs.map((tab) => (tab.url))
+        openAllTabs({ workspaceId, urls: TabUrls, windowsId: tabs[0].windowId, })
+    }
     return (<>
         <div className='flex w-auto flex-col p-2 rounded-2xl'>
             <div className='w-auto flex items-center relative justify-between'>
@@ -60,7 +64,7 @@ function Tabs({ tabs, selectedTabId, onTabSelect, ProjectTitle }: TabsProps) {
                             <IconDownloadFilled />
                             <span>Save session </span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => openAllTabs(TabUrls)} variant="default">
+                        <DropdownMenuItem onClick={handleTabOpen} variant="default">
                             <IconExternalLink />
                             <span>Open all Tabs</span>
                         </DropdownMenuItem>

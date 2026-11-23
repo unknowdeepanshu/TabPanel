@@ -12,6 +12,7 @@ export const workspaceSlice = createSlice({
   name: "workspace",
   initialState,
   reducers: {
+    // workspace methods
     addWorkspace: (state, action: PayloadAction<Workspace>) => {
       state.workspaces.push(action.payload);
       state.activeWorkspaceId = action.payload.id;
@@ -40,6 +41,7 @@ export const workspaceSlice = createSlice({
         workspace.workspaceName = action.payload.workspaceName;
       }
     },
+    // project methods
     addProject: (
       state,
       action: PayloadAction<{ workspaceId: number; project: Project }>,
@@ -81,6 +83,7 @@ export const workspaceSlice = createSlice({
         );
       }
     },
+    // tabs methods
     addTab: (state, action: PayloadAction<{ Tab: any }>) => {
       const project = state.workspaces
         .flatMap((workspace) => workspace.projects)

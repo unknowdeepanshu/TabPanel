@@ -49,7 +49,6 @@ function Project({ workspaceId,
                         onSelect={onProjectSelect}
                     />
                 ))}
-
             </div>
         </div>
     );

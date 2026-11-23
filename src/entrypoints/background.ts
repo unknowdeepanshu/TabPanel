@@ -2,30 +2,6 @@ import { browser } from "wxt/browser";
 import { defineBackground } from "wxt/utils/define-background";
 
 export default defineBackground(() => {
-  let tabPlanWindowId: number | null = null;
-
-  async function openTabPlan() {
-    if (tabPlanWindowId !== null) {
-      try {
-        await browser.windows.get(tabPlanWindowId);
-        await browser.windows.update(tabPlanWindowId, { focused: true });
-        return;
-      } catch {
-        tabPlanWindowId = null;
-      }
-    }
-
-    const window = await browser.windows.create({
-      url: chrome.runtime.getURL("popup.html"),
-      type: "popup",
-      width: 1100,
-      height: 750,
-      focused: true,
-    });
-
-    tabPlanWindowId = window?.id ?? null;
-  }
-
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     const handleMessage = async () => {
       switch (message.type) {
@@ -66,7 +42,9 @@ export default defineBackground(() => {
             windowId: newWindow?.id,
             tabs: newWindow?.tabs,
           };
-
+        case "CLOSE_ALL_TABS":
+          const close = await browser.windows.remove(message.windowsId);
+          return close;
         default:
           break;
       }
@@ -82,9 +60,8 @@ export default defineBackground(() => {
 
     return true;
   });
-  // tracking browser tabs and windowId
+  // tracking browser tabs and windows
   browser.tabs.onCreated.addListener((tab) => {
-    console.log("NEW TAB CREATED:", tab);
     void browser.runtime
       .sendMessage({
         type: "TAB_CREATED",
@@ -113,6 +90,31 @@ export default defineBackground(() => {
       })
       .catch(() => {});
   });
+  // tracking browser windows
+
+  let tabPlanWindowId: number | null = null;
+
+  async function openTabPlan() {
+    if (tabPlanWindowId !== null) {
+      try {
+        await browser.windows.get(tabPlanWindowId);
+        await browser.windows.update(tabPlanWindowId, { focused: true });
+        return;
+      } catch {
+        tabPlanWindowId = null;
+      }
+    }
+
+    const window = await browser.windows.create({
+      url: chrome.runtime.getURL("popup.html"),
+      type: "popup",
+      width: 1100,
+      height: 750,
+      focused: true,
+    });
+
+    tabPlanWindowId = window?.id ?? null;
+  }
 
   browser.action.onClicked.addListener(() => {
     void openTabPlan();

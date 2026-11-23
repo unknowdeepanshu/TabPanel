@@ -17,11 +17,9 @@ export default function useBrowserTrack() {
           return dispatch(addTab({ Tab: tab }));
         case "TAB_REMOVED":
           const tabs = message.payload;
-          console.log("React received remove tabs:", tabs);
           return dispatch(removeTab(tabs));
         case "TAB_UPDATED":
           const Tab = message.payload;
-          console.log("React received update tabs:", Tab);
           return dispatch(updateTab({ Tab }));
         default:
           break;
