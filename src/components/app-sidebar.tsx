@@ -31,7 +31,7 @@ export function AppSidebar({
       res: workspaceState.res
     }
   })
-
+  console.log("this is res", workspacesName)
   return (
     <>
       <Sidebar className="dark text-white-400" collapsible="icon" {...props}>

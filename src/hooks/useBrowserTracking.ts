@@ -25,7 +25,7 @@ export default function useBrowserTrack(workSpaceID?: number) {
           return dispatch(updateTab({ Tab }));
         case "WINDOW_CREATED":
           const windowCreated = message.payload;
-          console.log("this is windowCreated", windowCreated);
+          // console.log("this is windowCreated", windowCreated);
           if (workSpaceID === undefined) return;
           return dispatch(
             addProject({
@@ -40,7 +40,7 @@ export default function useBrowserTrack(workSpaceID?: number) {
           );
         case "WINDOW_CLOSED":
           const windowClosed = message.payload;
-          console.log("This is window close", windowClosed);
+          // console.log("This is window close", windowClosed);
           if (workSpaceID === undefined) return;
           return dispatch(
             removeProject({

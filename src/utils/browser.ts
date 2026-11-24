@@ -5,7 +5,7 @@ import { browser } from "wxt/browser";
 export function useOpenAllTabs() {
   const dispatch = useAppDispatch();
 
-  return async function openAllTabs({
+  async function openAllTabs({
     workspaceId,
     urls,
     windowsId,
@@ -36,5 +36,13 @@ export function useOpenAllTabs() {
         },
       }),
     );
-  };
+  }
+
+  async function closeAllTabs(windowsId: number) {
+    await browser.runtime.sendMessage({
+      type: "CLOSE_ALL_TABS",
+      windowsId,
+    });
+  }
+  return { openAllTabs, closeAllTabs };
 }

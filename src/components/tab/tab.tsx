@@ -31,12 +31,17 @@ interface TabsProps {
 
 function Tabs({ workspaceId, tabs, selectedTabId, onTabSelect, ProjectTitle, selectedProjectId }: TabsProps) {
     const { isMobile } = useSidebar()
-    const openAllTabs = useOpenAllTabs()
+    const { openAllTabs, closeAllTabs } = useOpenAllTabs()
     const handleTabOpen = () => {
         const windowId = tabs[0]?.windowId
         if (windowId === undefined || workspaceId === undefined || selectedProjectId === undefined) return
         const TabUrls = tabs.map((tab) => (tab.url))
         openAllTabs({ workspaceId, urls: TabUrls, windowsId: windowId, projectId: selectedProjectId })
+    }
+    const handleTabClose = () => {
+        const windowId = tabs[0]?.windowId
+        if (windowId === undefined || workspaceId === undefined || selectedProjectId === undefined) return
+        closeAllTabs(windowId)
     }
     return (<>
         <div className='flex w-auto flex-col p-2 rounded-2xl'>
@@ -72,7 +77,7 @@ function Tabs({ workspaceId, tabs, selectedTabId, onTabSelect, ProjectTitle, sel
                             <IconExternalLink />
                             <span>Open all Tabs</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem >
+                        <DropdownMenuItem onClick={handleTabClose}>
                             <IconSquareX />
                             <span>Close all Tabs</span>
                         </DropdownMenuItem> <DropdownMenuItem variant="destructive">
