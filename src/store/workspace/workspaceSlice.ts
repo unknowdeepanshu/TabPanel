@@ -51,7 +51,13 @@ export const workspaceSlice = createSlice({
       );
 
       if (workspace) {
-        workspace.projects.push(action.payload.project);
+        const projectExists = workspace.projects.some(
+          (project) => project.id === action.payload.project.id,
+        );
+
+        if (!projectExists) {
+          workspace.projects.push(action.payload.project);
+        }
       }
     },
     renameProject: (
@@ -81,6 +87,46 @@ export const workspaceSlice = createSlice({
         workspace.projects = workspace.projects.filter(
           (project) => project.id !== action.payload.projectId,
         );
+      }
+    },
+    updateProject: (
+      state,
+      action: PayloadAction<{
+        workspaceId: number;
+        project: Project;
+        projectId: number;
+      }>,
+    ) => {
+      const workspace = state.workspaces.find(
+        (item) => item.id === action.payload.workspaceId,
+      );
+
+      if (workspace) {
+        const projectIndex = workspace.projects.findIndex(
+          (project) => project.id === action.payload.projectId,
+        );
+
+        if (projectIndex !== -1) {
+          const existingProject = workspace.projects[projectIndex];
+          const updatedProject = {
+            ...existingProject,
+            ...action.payload.project,
+          };
+
+          workspace.projects = workspace.projects.filter(
+            (project, index) =>
+              index === projectIndex ||
+              project.id !== action.payload.project.id,
+          );
+
+          const updatedProjectIndex = workspace.projects.findIndex(
+            (project) => project.id === action.payload.projectId,
+          );
+
+          if (updatedProjectIndex !== -1) {
+            workspace.projects[updatedProjectIndex] = updatedProject;
+          }
+        }
       }
     },
     // tabs methods
@@ -174,6 +220,7 @@ export const {
   addProject,
   removeProject,
   renameProject,
+  updateProject,
   addTab,
   removeTab,
   updateTab,

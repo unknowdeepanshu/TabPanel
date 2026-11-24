@@ -17,7 +17,7 @@ import {
 } from "@src/components/ui/sidebar"
 import { IconDownloadFilled, IconExternalLink, IconSquareX } from '@tabler/icons-react';
 import { Delete02Icon } from "@hugeicons/core-free-icons"
-import { openAllTabs } from '@src/utils/browser';
+import { useOpenAllTabs } from '@src/utils/browser';
 
 
 interface TabsProps {
@@ -25,14 +25,18 @@ interface TabsProps {
     tabs: WorkspaceTab[];
     selectedTabId?: number;
     onTabSelect: (tabId: number) => void;
-    ProjectTitle: string | undefined
+    ProjectTitle: string | undefined;
+    selectedProjectId?: number;
 }
 
-function Tabs({ workspaceId, tabs, selectedTabId, onTabSelect, ProjectTitle }: TabsProps) {
+function Tabs({ workspaceId, tabs, selectedTabId, onTabSelect, ProjectTitle, selectedProjectId }: TabsProps) {
     const { isMobile } = useSidebar()
+    const openAllTabs = useOpenAllTabs()
     const handleTabOpen = () => {
+        const windowId = tabs[0]?.windowId
+        if (windowId === undefined || workspaceId === undefined || selectedProjectId === undefined) return
         const TabUrls = tabs.map((tab) => (tab.url))
-        openAllTabs({ workspaceId: workspaceId, urls: TabUrls, windowsId: tabs[0].windowId, })
+        openAllTabs({ workspaceId, urls: TabUrls, windowsId: windowId, projectId: selectedProjectId })
     }
     return (<>
         <div className='flex w-auto flex-col p-2 rounded-2xl'>

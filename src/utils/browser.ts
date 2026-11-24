@@ -1,34 +1,40 @@
 import { useAppDispatch } from "@src/store/hook";
-import { addProject } from "@src/store/workspace/workspaceSlice";
+import { updateProject } from "@src/store/workspace/workspaceSlice";
 import { browser } from "wxt/browser";
 
-export async function openAllTabs({
-  workspaceId,
-  urls,
-  windowsId,
-}: {
-  workspaceId?: number;
-  urls: string[];
-  windowsId: number;
-}) {
+export function useOpenAllTabs() {
   const dispatch = useAppDispatch();
-  const data = await browser.runtime.sendMessage({
-    type: "OPEN_ALL_TABS",
+
+  return async function openAllTabs({
+    workspaceId,
     urls,
-  });
-  await browser.runtime.sendMessage({
-    type: "CLOSE_ALL_TABS",
     windowsId,
-  });
-  dispatch(
-    addProject({
-      workspaceId: workspaceId!,
-      project: {
-        id: data.windowId,
-        name: "Untitled Project",
-        tabNumber: data.tabs.length,
-        tabs: data.tabs,
-      },
-    }),
-  );
+    projectId,
+  }: {
+    workspaceId?: number;
+    urls: string[];
+    windowsId: number;
+    projectId: number;
+  }) {
+    const data = await browser.runtime.sendMessage({
+      type: "OPEN_ALL_TABS",
+      urls,
+    });
+    await browser.runtime.sendMessage({
+      type: "CLOSE_ALL_TABS",
+      windowsId,
+    });
+    dispatch(
+      updateProject({
+        projectId: projectId,
+        workspaceId: workspaceId!,
+        project: {
+          id: data.windowId,
+          // name: "Untitled Project",
+          tabNumber: data.tabs.length,
+          tabs: data.tabs,
+        },
+      }),
+    );
+  };
 }

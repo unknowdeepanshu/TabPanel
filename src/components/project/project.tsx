@@ -72,11 +72,11 @@ function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
                 }`}
             onClick={() => onSelect(project.id)}
             onDoubleClick={() => {
-                setValue(project.name)
+                setValue(project.name!)
                 setEditingProjectId(project.id)
             }}
             onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
+                if (event.key === "Enter") {
                     event.preventDefault()
                     onSelect(project.id)
                 }

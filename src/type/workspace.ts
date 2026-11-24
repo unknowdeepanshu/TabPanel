@@ -2,7 +2,7 @@ type Tab = any;
 
 type Project = {
   id: number;
-  name: string;
+  name?: string;
   tabNumber: number;
   tabs?: Tab[];
 };
