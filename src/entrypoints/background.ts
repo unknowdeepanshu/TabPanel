@@ -107,6 +107,7 @@ export default defineBackground(() => {
       })
       .catch(() => {});
   });
+
   let tabPlanWindowId: number | null = null;
 
   async function openTabPlan() {

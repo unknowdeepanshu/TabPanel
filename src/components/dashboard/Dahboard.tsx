@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { browser } from "wxt/browser";
 import { WorkspacePlanner } from "../workspacePlaner/workspacePlaner";
 import useBrowserTrack from "@src/hooks/useBrowserTracking";
+import { Setting } from "../setting/setting";
 
 export function CardDemo() {
   return (
@@ -66,10 +67,3 @@ export default function Page() {
   );
 }
 
-export function Setting() {
-  return (<>
-    <div className="flex h-full w-auto items-center justify-center">
-      <h1 className="text-2xl"> there is Setting</h1>
-    </div>
-  </>)
-}
